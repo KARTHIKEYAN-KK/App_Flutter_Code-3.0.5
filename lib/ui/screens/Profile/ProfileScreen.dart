@@ -66,11 +66,14 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   getUserData() {
     if (context.read<AuthCubit>().getUserId() != "0") {
-      nameC = TextEditingController(text: context.read<AuthCubit>().getUserName());
+      nameC =
+          TextEditingController(text: context.read<AuthCubit>().getUserName());
       name = context.read<AuthCubit>().getUserName();
-      monoC = TextEditingController(text: context.read<AuthCubit>().getMobile());
+      monoC =
+          TextEditingController(text: context.read<AuthCubit>().getMobile());
       mobile = context.read<AuthCubit>().getMobile();
-      emailC = TextEditingController(text: context.read<AuthCubit>().getEmail());
+      emailC =
+          TextEditingController(text: context.read<AuthCubit>().getEmail());
       email = context.read<AuthCubit>().getEmail();
       profile = context.read<AuthCubit>().getProfile();
       setState(() {});
@@ -79,12 +82,15 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   getOtherPagesData() {
     Future.delayed(Duration.zero, () {
-      context.read<OtherPageCubit>().getOtherPage(context: context, langId: context.read<AppLocalizationCubit>().state.id);
+      context.read<OtherPageCubit>().getOtherPage(
+          context: context,
+          langId: context.read<AppLocalizationCubit>().state.id);
     });
   }
 
   Widget pagesBuild() {
-    return BlocBuilder<OtherPageCubit, OtherPageState>(builder: (context, state) {
+    return BlocBuilder<OtherPageCubit, OtherPageState>(
+        builder: (context, state) {
       if (state is OtherPageFetchSuccess) {
         return ScrollConfiguration(
           behavior: GlobalScrollBehavior(),
@@ -93,8 +99,15 @@ class ProfileScreenState extends State<ProfileScreen> {
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: state.otherPage.length,
-            itemBuilder: ((context, index) =>
-                setDrawerItem(state.otherPage[index].title!, Icons.info_rounded, false, true, false, 7, image: state.otherPage[index].image!, desc: state.otherPage[index].pageContent)),
+            itemBuilder: ((context, index) => setDrawerItem(
+                state.otherPage[index].title!,
+                Icons.info_rounded,
+                false,
+                true,
+                false,
+                7,
+                image: state.otherPage[index].image!,
+                desc: state.otherPage[index].pageContent)),
           ),
         );
       } else {
@@ -119,11 +132,14 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool getTheme() {
-    return (context.read<ThemeCubit>().state.appTheme == AppTheme.Dark) ? true : false;
+    return (context.read<ThemeCubit>().state.appTheme == AppTheme.Dark)
+        ? true
+        : false;
   }
 
   bool getNotification() {
-    if (context.read<SettingsCubit>().state.settingsModel!.notification == true) {
+    if (context.read<SettingsCubit>().state.settingsModel!.notification ==
+        true) {
       return true;
     } else {
       return false;
@@ -136,7 +152,9 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   //set drawer item list press
-  Widget setDrawerItem(String title, IconData? icon, bool isTrailing, bool isNavigate, bool isSwitch, int id, {String? image, String? desc}) {
+  Widget setDrawerItem(String title, IconData? icon, bool isTrailing,
+      bool isNavigate, bool isSwitch, int id,
+      {String? image, String? desc}) {
     return ListTile(
       dense: true,
       leading: image != null
@@ -146,10 +164,13 @@ class ProfileScreenState extends State<ProfileScreen> {
               height: 25,
               color: UiUtils.getColorScheme(context).primaryContainer,
             )
-          : Icon(
-              icon,
-              size: 25,
-            ),
+          : (icon != null
+              ? Icon(
+                  icon,
+                  size: 25,
+                  color: UiUtils.getColorScheme(context).primaryContainer,
+                )
+              : null),
       iconColor: UiUtils.getColorScheme(context).primaryContainer,
       trailing: (isTrailing)
           ? SizedBox(
@@ -167,12 +188,16 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
               ))
           : const SizedBox.shrink(),
-      title: CustomTextLabel(text: title, textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer)),
+      title: CustomTextLabel(
+          text: title,
+          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: UiUtils.getColorScheme(context).primaryContainer)),
       onTap: () {
         if (isNavigate) {
           switch (id) {
             case 2:
-              Navigator.of(context).pushNamed(Routes.languageList, arguments: {"from": 2});
+              Navigator.of(context)
+                  .pushNamed(Routes.languageList, arguments: {"from": 2});
               break;
             case 3:
               Navigator.of(context).pushNamed(Routes.bookmark);
@@ -184,16 +209,19 @@ class ProfileScreenState extends State<ProfileScreen> {
               Navigator.of(context).pushNamed(Routes.showNews);
               break;
             case 6:
-              Navigator.of(context).pushNamed(Routes.managePref, arguments: {"from": 1});
+              Navigator.of(context)
+                  .pushNamed(Routes.managePref, arguments: {"from": 1});
               break;
             case 7:
-              Navigator.of(context).pushNamed(Routes.privacy, arguments: {"from": "setting", "title": title, "desc": desc});
+              Navigator.of(context).pushNamed(Routes.privacy,
+                  arguments: {"from": "setting", "title": title, "desc": desc});
               break;
             case 8:
               _openStoreListing();
               break;
             case 9:
-              var str = "$appName\n\n$appFind$androidLink$packageName\n\n $iosLbl\n$iosLink";
+              var str =
+                  "$appName\n\n$appFind$androidLink$packageName\n\n $iosLbl\n$iosLink";
               Share.share(str);
               break;
             case 10:
@@ -214,19 +242,32 @@ class ProfileScreenState extends State<ProfileScreen> {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setStater) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setStater) {
             return AlertDialog(
               backgroundColor: UiUtils.getColorScheme(context).background,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
               content: CustomTextLabel(
                 text: 'logoutTxt',
-                textStyle: Theme.of(this.context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer),
+                textStyle: Theme.of(this.context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(
+                        color:
+                            UiUtils.getColorScheme(context).primaryContainer),
               ),
               actions: <Widget>[
                 TextButton(
                     child: CustomTextLabel(
                       text: 'noLbl',
-                      textStyle: Theme.of(this.context).textTheme.titleSmall?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer, fontWeight: FontWeight.bold),
+                      textStyle: Theme.of(this.context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                              color: UiUtils.getColorScheme(context)
+                                  .primaryContainer,
+                              fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(false);
@@ -234,13 +275,24 @@ class ProfileScreenState extends State<ProfileScreen> {
                 TextButton(
                     child: CustomTextLabel(
                       text: 'yesLbl',
-                      textStyle: Theme.of(this.context).textTheme.titleSmall?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer, fontWeight: FontWeight.bold),
+                      textStyle: Theme.of(this.context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                              color: UiUtils.getColorScheme(context)
+                                  .primaryContainer,
+                              fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
                       for (int i = 0; i < AuthProvider.values.length; i++) {
-                        if (AuthProvider.values[i].name == context.read<AuthCubit>().getType()) {
-                          context.read<AuthCubit>().signOut(AuthProvider.values[i]).then((value) {
-                            Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+                        if (AuthProvider.values[i].name ==
+                            context.read<AuthCubit>().getType()) {
+                          context
+                              .read<AuthCubit>()
+                              .signOut(AuthProvider.values[i])
+                              .then((value) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                Routes.login, (route) => false);
                           });
                         }
                       }
@@ -256,32 +308,63 @@ class ProfileScreenState extends State<ProfileScreen> {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setStater) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setStater) {
             return AlertDialog(
               backgroundColor: UiUtils.getColorScheme(context).background,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
               content: CustomTextLabel(
-                text: (_auth.currentUser != null) ? 'deleteConfirm' : 'deleteRelogin',
-                textStyle: Theme.of(this.context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer),
+                text: (_auth.currentUser != null)
+                    ? 'deleteConfirm'
+                    : 'deleteRelogin',
+                textStyle: Theme.of(this.context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(
+                        color:
+                            UiUtils.getColorScheme(context).primaryContainer),
               ),
-              title: (_auth.currentUser != null) ? const CustomTextLabel(text: 'deleteAcc') : const CustomTextLabel(text: 'deleteAlertTitle'),
-              titleTextStyle: Theme.of(this.context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800, color: UiUtils.getColorScheme(context).primaryContainer),
+              title: (_auth.currentUser != null)
+                  ? const CustomTextLabel(text: 'deleteAcc')
+                  : const CustomTextLabel(text: 'deleteAlertTitle'),
+              titleTextStyle: Theme.of(this.context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: UiUtils.getColorScheme(context).primaryContainer),
               actions: <Widget>[
                 TextButton(
                     child: CustomTextLabel(
                       text: (_auth.currentUser != null) ? 'noLbl' : 'cancelBtn',
-                      textStyle: Theme.of(this.context).textTheme.titleSmall?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer, fontWeight: FontWeight.bold),
+                      textStyle: Theme.of(this.context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                              color: UiUtils.getColorScheme(context)
+                                  .primaryContainer,
+                              fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     }),
                 TextButton(
                     child: CustomTextLabel(
-                      text: (_auth.currentUser != null) ? 'yesLbl' : 'logoutLbl',
-                      textStyle: Theme.of(this.context).textTheme.titleSmall?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer, fontWeight: FontWeight.bold),
+                      text:
+                          (_auth.currentUser != null) ? 'yesLbl' : 'logoutLbl',
+                      textStyle: Theme.of(this.context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                              color: UiUtils.getColorScheme(context)
+                                  .primaryContainer,
+                              fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
-                      (_auth.currentUser != null) ? proceedToDeleteProfile() : askToLoginAgain();
+                      (_auth.currentUser != null)
+                          ? proceedToDeleteProfile()
+                          : askToLoginAgain();
                     })
               ],
             );
@@ -291,7 +374,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   askToLoginAgain() {
     showSnackBar(UiUtils.getTranslatedLabel(context, 'loginReqMsg'), context);
-    Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 
   proceedToDeleteProfile() async {
@@ -299,12 +383,21 @@ class ProfileScreenState extends State<ProfileScreen> {
     try {
       await _auth.currentUser!.delete().then((value) {
         //delete user prefs from App-local
-        context.read<DeleteUserCubit>().setDeleteUser(userId: context.read<AuthCubit>().getUserId(), context: context).then((value) {
+        context
+            .read<DeleteUserCubit>()
+            .setDeleteUser(
+                userId: context.read<AuthCubit>().getUserId(), context: context)
+            .then((value) {
           showSnackBar(value["message"], context);
           for (int i = 0; i < AuthProvider.values.length; i++) {
-            if (AuthProvider.values[i].name == context.read<AuthCubit>().getType()) {
-              context.read<AuthCubit>().signOut(AuthProvider.values[i]).then((value) {
-                Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+            if (AuthProvider.values[i].name ==
+                context.read<AuthCubit>().getType()) {
+              context
+                  .read<AuthCubit>()
+                  .signOut(AuthProvider.values[i])
+                  .then((value) {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(Routes.login, (route) => false);
               });
             }
           }
@@ -313,9 +406,14 @@ class ProfileScreenState extends State<ProfileScreen> {
     } on FirebaseAuthException catch (error) {
       if (error.code == "requires-recent-login") {
         for (int i = 0; i < AuthProvider.values.length; i++) {
-          if (AuthProvider.values[i].name == context.read<AuthCubit>().getType()) {
-            context.read<AuthCubit>().signOut(AuthProvider.values[i]).then((value) {
-              Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (route) => false);
+          if (AuthProvider.values[i].name ==
+              context.read<AuthCubit>().getType()) {
+            context
+                .read<AuthCubit>()
+                .signOut(AuthProvider.values[i])
+                .then((value) {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(Routes.login, (route) => false);
             });
           }
         }
@@ -341,7 +439,8 @@ class ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 20,
             width: 20,
-            child: Icon(Icons.person_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+            child: Icon(Icons.person_rounded,
+                color: UiUtils.getColorScheme(context).primaryContainer),
           ),
           Padding(
               padding: const EdgeInsetsDirectional.only(start: 20.0),
@@ -351,17 +450,27 @@ class ProfileScreenState extends State<ProfileScreen> {
                 children: <Widget>[
                   CustomTextLabel(
                       text: 'nameLbl',
-                      textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: UiUtils.getColorScheme(context).primaryContainer,
-                          )),
-                  if (name != "") Text(name!, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer)),
+                      textStyle:
+                          Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer,
+                              )),
+                  if (name != "")
+                    Text(name!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer)),
                 ],
               )),
           const Spacer(),
           Padding(
             padding: const EdgeInsetsDirectional.only(end: 15),
             child: InkWell(
-              child: Icon(Icons.edit_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+              child: Icon(Icons.edit_rounded,
+                  color: UiUtils.getColorScheme(context).primaryContainer),
               onTap: () {
                 //show bottomsheet to edit name
                 editNameBottomSheet();
@@ -378,13 +487,20 @@ class ProfileScreenState extends State<ProfileScreen> {
         context: context,
         elevation: 3.0,
         //it will be closed only when user click On Save button & not by clicking anywhere else in screen
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         enableDrag: false,
         builder: (BuildContext context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
-                padding: const EdgeInsetsDirectional.only(bottom: 20.0, top: 5.0, start: 20.0, end: 20.0),
-                decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)), color: UiUtils.getColorScheme(context).background),
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 20.0, top: 5.0, start: 20.0, end: 20.0),
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
+                    color: UiUtils.getColorScheme(context).background),
                 child: Form(
                     key: _nameFormKey,
                     child: SingleChildScrollView(
@@ -396,13 +512,18 @@ class ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsetsDirectional.all(10.0),
                               child: CustomTextLabel(
                                 text: 'updateName',
-                                textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      color: UiUtils.getColorScheme(context).primaryContainer,
+                                      color: UiUtils.getColorScheme(context)
+                                          .primaryContainer,
                                     ),
                               )),
                           Padding(
-                              padding: const EdgeInsetsDirectional.only(top: 10.0),
+                              padding:
+                                  const EdgeInsetsDirectional.only(top: 10.0),
                               child: TextFormField(
                                 autofocus: true,
                                 textInputAction: TextInputAction.done,
@@ -412,20 +533,39 @@ class ProfileScreenState extends State<ProfileScreen> {
                                     name = newVal;
                                   });
                                 },
-                                validator: (val) => Validators.nameValidation(val!, context),
-                                style: Theme.of(this.context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer),
+                                validator: (val) =>
+                                    Validators.nameValidation(val!, context),
+                                style: Theme.of(this.context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: UiUtils.getColorScheme(context)
+                                            .primaryContainer),
                                 decoration: InputDecoration(
-                                  hintText: UiUtils.getTranslatedLabel(context, 'nameLbl'),
-                                  hintStyle: Theme.of(this.context).textTheme.titleMedium?.copyWith(color: darkBackgroundColor),
+                                  hintText: UiUtils.getTranslatedLabel(
+                                      context, 'nameLbl'),
+                                  hintStyle: Theme.of(this.context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(color: darkBackgroundColor),
                                   filled: true,
-                                  fillColor: UiUtils.getColorScheme(context).background,
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 17),
+                                  fillColor: UiUtils.getColorScheme(context)
+                                      .background,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 17),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: UiUtils.getColorScheme(context).primaryContainer.withOpacity(0.6)),
+                                    borderSide: BorderSide(
+                                        color: UiUtils.getColorScheme(context)
+                                            .primaryContainer
+                                            .withOpacity(0.6)),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: UiUtils.getColorScheme(context).primaryContainer.withOpacity(0.6), width: 1.5),
+                                    borderSide: BorderSide(
+                                        color: UiUtils.getColorScheme(context)
+                                            .primaryContainer
+                                            .withOpacity(0.6),
+                                        width: 1.5),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
@@ -437,35 +577,61 @@ class ProfileScreenState extends State<ProfileScreen> {
                                 if (state is UpdateUserFetchSuccess) {
                                   setState(() {
                                     name = nameC!.text;
-                                    showSnackBar(UiUtils.getTranslatedLabel(context, 'profileUpdateMsg'), context);
+                                    showSnackBar(
+                                        UiUtils.getTranslatedLabel(
+                                            context, 'profileUpdateMsg'),
+                                        context);
                                     Navigator.pop(context);
                                   });
-                                  context.read<AuthCubit>().updateUserName(name!);
+                                  context
+                                      .read<AuthCubit>()
+                                      .updateUserName(name!);
                                 }
                               },
                               child: Container(
                                   alignment: Alignment.center,
-                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context).primaryColor,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
                                       shadowColor: Colors.transparent,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(7.0)),
                                     ),
                                     child: Container(
                                       height: 55.0,
-                                      width: MediaQuery.of(context).size.width * 0.3,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
                                       alignment: Alignment.center,
                                       child: CustomTextLabel(
                                         text: 'saveLbl',
-                                        textStyle: Theme.of(this.context).textTheme.titleLarge?.copyWith(color: secondaryColor, fontWeight: FontWeight.w500, fontSize: 16, letterSpacing: 0.6),
+                                        textStyle: Theme.of(this.context)
+                                            .textTheme
+                                            .titleLarge
+                                            ?.copyWith(
+                                                color: secondaryColor,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                                letterSpacing: 0.6),
                                       ),
                                     ),
                                     onPressed: () async {
                                       final form = _nameFormKey.currentState;
                                       if (form!.validate()) {
                                         form.save();
-                                        context.read<UpdateUserCubit>().setUpdateUser(userId: context.read<AuthCubit>().getUserId(), context: context, name: nameC!.text);
+                                        context
+                                            .read<UpdateUserCubit>()
+                                            .setUpdateUser(
+                                                userId: context
+                                                    .read<AuthCubit>()
+                                                    .getUserId(),
+                                                context: context,
+                                                name: nameC!.text);
                                       }
                                     },
                                   )))
@@ -483,7 +649,8 @@ class ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: 20,
               width: 20,
-              child: Icon(Icons.phone_iphone_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+              child: Icon(Icons.phone_iphone_rounded,
+                  color: UiUtils.getColorScheme(context).primaryContainer),
             ),
             Padding(
                 padding: const EdgeInsetsDirectional.only(start: 20.0),
@@ -491,7 +658,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    CustomTextLabel(text: 'mobileLbl', textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer)),
+                    CustomTextLabel(
+                        text: 'mobileLbl',
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer)),
                     Form(
                         key: _formkey1,
                         child: SizedBox(
@@ -503,7 +677,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                                   mobile = newValue;
                                 });
                               },
-                              validator: (val) => Validators.mobValidation(val!, context),
+                              validator: (val) =>
+                                  Validators.mobValidation(val!, context),
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
@@ -514,7 +689,12 @@ class ProfileScreenState extends State<ProfileScreen> {
                                 contentPadding: EdgeInsets.all(0),
                               ),
                               controller: monoC,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: UiUtils.getColorScheme(context)
+                                          .primaryContainer),
                             ))),
                   ],
                 )),
@@ -522,7 +702,9 @@ class ProfileScreenState extends State<ProfileScreen> {
             if (context.read<AuthCubit>().getType() != loginMbl)
               !isEditMono
                   ? InkWell(
-                      child: Icon(Icons.edit_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+                      child: Icon(Icons.edit_rounded,
+                          color:
+                              UiUtils.getColorScheme(context).primaryContainer),
                       onTap: () {
                         setState(() {
                           isEditMono = true;
@@ -536,7 +718,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                           setState(() {
                             mobile = monoC!.text;
                             isEditMono = false;
-                            showSnackBar(UiUtils.getTranslatedLabel(context, 'profileUpdateMsg'), context);
+                            showSnackBar(
+                                UiUtils.getTranslatedLabel(
+                                    context, 'profileUpdateMsg'),
+                                context);
                           });
                           context.read<AuthCubit>().updateUserMobile(mobile!);
                         }
@@ -545,13 +730,17 @@ class ProfileScreenState extends State<ProfileScreen> {
                         child: Icon(
                           Icons.check_box,
                           size: 20,
-                          color: UiUtils.getColorScheme(context).primaryContainer,
+                          color:
+                              UiUtils.getColorScheme(context).primaryContainer,
                         ),
                         onTap: () {
                           final form = _formkey1.currentState;
                           if (form!.validate()) {
                             form.save();
-                            context.read<UpdateUserCubit>().setUpdateUser(userId: context.read<AuthCubit>().getUserId(), context: context, mobile: monoC!.text);
+                            context.read<UpdateUserCubit>().setUpdateUser(
+                                userId: context.read<AuthCubit>().getUserId(),
+                                context: context,
+                                mobile: monoC!.text);
                           }
                         },
                       ))
@@ -566,7 +755,8 @@ class ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 20,
             width: 20,
-            child: Icon(Icons.email_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+            child: Icon(Icons.email_rounded,
+                color: UiUtils.getColorScheme(context).primaryContainer),
           ),
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 20.0),
@@ -581,7 +771,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                           email = val;
                         });
                       },
-                      validator: (val) => Validators.emailValidation(val!, context),
+                      validator: (val) =>
+                          Validators.emailValidation(val!, context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -592,14 +783,20 @@ class ProfileScreenState extends State<ProfileScreen> {
                         contentPadding: EdgeInsets.all(0),
                       ),
                       controller: emailC,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: UiUtils.getColorScheme(context).primaryContainer),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color:
+                              UiUtils.getColorScheme(context).primaryContainer),
                     ))),
           ),
           const Spacer(),
-          if (context.read<AuthCubit>().getType() != loginEmail && context.read<AuthCubit>().getType() != loginFb && context.read<AuthCubit>().getType() != loginGmail)
+          if (context.read<AuthCubit>().getType() != loginEmail &&
+              context.read<AuthCubit>().getType() != loginFb &&
+              context.read<AuthCubit>().getType() != loginGmail)
             !isEditEmail
                 ? InkWell(
-                    child: Icon(Icons.edit_rounded, color: UiUtils.getColorScheme(context).primaryContainer),
+                    child: Icon(Icons.edit_rounded,
+                        color:
+                            UiUtils.getColorScheme(context).primaryContainer),
                     onTap: () {
                       setState(() {
                         isEditEmail = true;
@@ -613,7 +810,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                         setState(() {
                           isEditEmail = false;
                           email = emailC!.text;
-                          showSnackBar(UiUtils.getTranslatedLabel(context, 'profileUpdateMsg'), context);
+                          showSnackBar(
+                              UiUtils.getTranslatedLabel(
+                                  context, 'profileUpdateMsg'),
+                              context);
                         });
                         context.read<AuthCubit>().updateUserEmail(email!);
                       }
@@ -629,7 +829,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                         if (form!.validate()) {
                           form.save();
 
-                          context.read<UpdateUserCubit>().setUpdateUser(userId: context.read<AuthCubit>().getUserId(), context: context, email: emailC!.text);
+                          context.read<UpdateUserCubit>().setUpdateUser(
+                              userId: context.read<AuthCubit>().getUserId(),
+                              context: context,
+                              email: emailC!.text);
                         }
                       },
                     ))
@@ -647,7 +850,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                     listener: (context, state) {
                       if (state is UpdateUserFetchSuccess) {
                         //update profile image path
-                        context.read<AuthCubit>().updateUserProfileUrl(Hive.box(authBoxKey).get(userProfileKey));
+                        context.read<AuthCubit>().updateUserProfileUrl(
+                            Hive.box(authBoxKey).get(userProfileKey));
                         getUserData();
                       }
                     },
@@ -656,16 +860,23 @@ class ProfileScreenState extends State<ProfileScreen> {
                         height: 110,
                         margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                         padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: UiUtils.getColorScheme(context).primaryContainer)),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer)),
                         alignment: Alignment.center,
                         child: (state is UpdateUserFetchInProgress)
-                            ? Center(child: showCircularProgress(true, Theme.of(context).primaryColor))
+                            ? Center(
+                                child: showCircularProgress(
+                                    true, Theme.of(context).primaryColor))
                             : ClipOval(
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: profile == ""
                                     ? Icon(
                                         Icons.person,
-                                        color: UiUtils.getColorScheme(context).primaryContainer,
+                                        color: UiUtils.getColorScheme(context)
+                                            .primaryContainer,
                                       )
                                     : Image.network(
                                         profile!,
@@ -690,13 +901,19 @@ class ProfileScreenState extends State<ProfileScreen> {
                         },
                         child: CircleAvatar(
                           radius: 16,
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
                           child: Container(
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: UiUtils.getColorScheme(context).primaryContainer)),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: UiUtils.getColorScheme(context)
+                                          .primaryContainer)),
                               child: Icon(
                                 Icons.camera_alt_rounded,
-                                color: UiUtils.getColorScheme(context).primaryContainer,
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer,
                                 size: 20,
                               )),
                         )))
@@ -732,7 +949,11 @@ class ProfileScreenState extends State<ProfileScreen> {
               child: Container(
                 margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: UiUtils.getColorScheme(context).primaryContainer)),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color:
+                            UiUtils.getColorScheme(context).primaryContainer)),
                 alignment: Alignment.center,
                 child: Icon(
                   Icons.person,
@@ -742,7 +963,8 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Container(
-                padding: const EdgeInsetsDirectional.only(bottom: 12.0, start: 12, end: 12, top: 12),
+                padding: const EdgeInsetsDirectional.only(
+                    bottom: 12.0, start: 12, end: 12, top: 12),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -751,21 +973,30 @@ class ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CustomTextLabel(
                           text: 'plzLbl',
-                          textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: UiUtils.getColorScheme(context).primaryContainer,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                          textStyle:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: UiUtils.getColorScheme(context)
+                                        .primaryContainer,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                         ),
                         InkWell(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             child: CustomTextLabel(
                               text: 'loginBtn',
-                              textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis),
                             ),
                           ),
                           onTap: () {
-                            Future.delayed(const Duration(milliseconds: 500), () {
+                            Future.delayed(const Duration(milliseconds: 500),
+                                () {
                               setState(() {
                                 Navigator.of(context).pushNamed(Routes.login);
                               });
@@ -774,18 +1005,22 @@ class ProfileScreenState extends State<ProfileScreen> {
                         ),
                         CustomTextLabel(
                           text: 'firstAccLbl',
-                          textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: UiUtils.getColorScheme(context).primaryContainer,
-                              ),
+                          textStyle:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: UiUtils.getColorScheme(context)
+                                        .primaryContainer,
+                                  ),
                         ),
                       ],
                     ),
                     CustomTextLabel(
                       text: 'allFunLbl',
-                      textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: UiUtils.getColorScheme(context).primaryContainer,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                      textStyle:
+                          Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: UiUtils.getColorScheme(context)
+                                    .primaryContainer,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                     ),
                   ],
                 )),
@@ -793,7 +1028,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showPicker() {
-    showUploadImageBottomsheet(context: context, onCamera: _getFromCamera, onGallery: _getFromGallery);
+    showUploadImageBottomsheet(
+        context: context, onCamera: _getFromCamera, onGallery: _getFromGallery);
   }
 
   //set image camera
@@ -808,7 +1044,10 @@ class ProfileScreenState extends State<ProfileScreen> {
         image = File(pickedFile.path);
         Navigator.of(context).pop(); //pop dialog
       });
-      context.read<UpdateUserCubit>().setUpdateUser(userId: context.read<AuthCubit>().getUserId(), context: context, filePath: image!.path);
+      context.read<UpdateUserCubit>().setUpdateUser(
+          userId: context.read<AuthCubit>().getUserId(),
+          context: context,
+          filePath: image!.path);
     }
   }
 
@@ -824,7 +1063,10 @@ class ProfileScreenState extends State<ProfileScreen> {
         image = File(pickedFile.path);
         Navigator.of(context).pop(); //pop dialog
       });
-      context.read<UpdateUserCubit>().setUpdateUser(userId: context.read<AuthCubit>().getUserId(), context: context, filePath: image!.path);
+      context.read<UpdateUserCubit>().setUpdateUser(
+          userId: context.read<AuthCubit>().getUserId(),
+          context: context,
+          filePath: image!.path);
     }
   }
 
@@ -833,7 +1075,9 @@ class ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.only(top: 20.0),
       child: Container(
           padding: const EdgeInsetsDirectional.only(start: 20.0, end: 20.0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0), color: Theme.of(context).colorScheme.background),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: Theme.of(context).colorScheme.background),
           child: ScrollConfiguration(
             behavior: GlobalScrollBehavior(),
             child: BlocBuilder<AuthCubit, AuthState>(
@@ -843,17 +1087,34 @@ class ProfileScreenState extends State<ProfileScreen> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   children: <Widget>[
-                    setDrawerItem('darkModeLbl', Icons.swap_horizontal_circle, true, false, true, 0),
-                    setDrawerItem('notificationLbl', Icons.notifications_rounded, true, false, true, 1),
-                    setDrawerItem('changeLang', Icons.g_translate_rounded, false, true, false, 2),
-                    if (context.read<AuthCubit>().getUserId() != "0") setDrawerItem('bookmarkLbl', Icons.bookmarks_rounded, false, true, false, 3),
-                    if (context.read<AuthCubit>().getUserId() != "0" && context.read<AuthCubit>().getRole() != "0") setDrawerItem('createNewsLbl', Icons.add_box_outlined, false, true, false, 4),
-                    if (context.read<AuthCubit>().getUserId() != "0" && context.read<AuthCubit>().getRole() != "0") setDrawerItem('manageNewsLbl', Icons.edit_note, false, true, false, 5),
+                    setDrawerItem('darkModeLbl', Icons.swap_horizontal_circle,
+                        true, false, true, 0),
+                    setDrawerItem('notificationLbl',
+                        Icons.notifications_rounded, true, false, true, 1),
+                    setDrawerItem('changeLang', Icons.g_translate_rounded,
+                        false, true, false, 2),
+                    if (context.read<AuthCubit>().getUserId() != "0")
+                      setDrawerItem('bookmarkLbl', Icons.bookmarks_rounded,
+                          false, true, false, 3),
+                    if (context.read<AuthCubit>().getUserId() != "0" &&
+                        context.read<AuthCubit>().getRole() != "0")
+                      setDrawerItem('createNewsLbl', Icons.add_box_outlined,
+                          false, true, false, 4),
+                    if (context.read<AuthCubit>().getUserId() != "0" &&
+                        context.read<AuthCubit>().getRole() != "0")
+                      setDrawerItem('manageNewsLbl', Icons.edit_note, false,
+                          true, false, 5),
                     pagesBuild(),
-                    setDrawerItem('rateUs', Icons.stars_sharp, false, true, false, 8),
-                    setDrawerItem('shareApp', Icons.share_rounded, false, true, false, 9),
-                    if (context.read<AuthCubit>().getUserId() != "0") setDrawerItem('logoutLbl', Icons.logout_rounded, false, true, false, 10),
-                    if (context.read<AuthCubit>().getUserId() != "0") setDrawerItem('deleteAcc', Icons.delete_forever_rounded, false, true, false, 11),
+                    setDrawerItem(
+                        'rateUs', Icons.stars_sharp, false, true, false, 8),
+                    setDrawerItem(
+                        'shareApp', Icons.share_rounded, false, true, false, 9),
+                    if (context.read<AuthCubit>().getUserId() != "0")
+                      setDrawerItem('logoutLbl', Icons.logout_rounded, false,
+                          true, false, 10),
+                    if (context.read<AuthCubit>().getUserId() != "0")
+                      setDrawerItem('deleteAcc', Icons.delete_forever_rounded,
+                          false, true, false, 11),
                   ],
                 );
               },
@@ -867,7 +1128,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     return Stack(
       children: [
         SingleChildScrollView(
-            padding: const EdgeInsetsDirectional.only(start: 15.0, end: 15.0, top: 45.0, bottom: 10.0),
+            padding: const EdgeInsetsDirectional.only(
+                start: 15.0, end: 15.0, top: 45.0, bottom: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,

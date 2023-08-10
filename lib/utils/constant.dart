@@ -1,7 +1,7 @@
 //database urls
 //Please add your admin panel url here and make sure you do not add '/' at the end of the url
 
-const String baseUrl = "news.karthi.ind.in";
+const String baseUrl = "https://news.karthi.ind.in";
 const String databaseUrl = "$baseUrl/api/";
 
 //Please add your jwt key here that you have added in admin panel system configuration setting
